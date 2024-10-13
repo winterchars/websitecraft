@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Server Control</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-panel {
+            text-align: center;
+            background-color: #1f1f1f;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            width: 400px;
+        }
+
+        button {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 10px auto;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #status-message {
+            margin-top: 20px;
+            color: #cccccc;
+            font-size: 18px;
+        }
+
+        .fixed-buttons {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="control-panel fixed-buttons">
+        <h1>Minecraft Server Control</h1>
+        
+        <!-- Start Server -->
+        <form id="start-server-form" method="POST">
+            <button type="button" id="start-server-btn">Start Server</button>
+        </form>
+
+        <!-- Stop Server -->
+        <form id="stop-server-form" method="POST">
+            <button type="button" id="stop-server-btn">Stop Server</button>
+        </form>
+
+        <div id="status-message"></div>
+    </div>
+
+    <script>
+        document.getElementById('start-server-btn').addEventListener('click', function() {
+            sendRequest('/start_server', 'Server started successfully!');
+        });
+
+        document.getElementById('stop-server-btn').addEventListener('click', function() {
+            sendRequest('/stop_server', 'Server stopped successfully!');
+        });
+
+        function sendRequest(url, successMessage) {
+            fetch(url, {
+                method: 'POST',
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('status-message').textContent = successMessage;
+            })
+            .catch(error => {
+                document.getElementById('status-message').textContent = 'Error: ' + error;
+            });
+        }
+    </script>
+</body>
+</html>
